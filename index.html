@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pedalea con Inteligencia: la guía completa de ciclismo de ruta para dejar de solo pedalear y empezar a entrenar con criterio. Técnica, zonas, planes, nutrición, lesiones, fuerza y plan de 12 semanas.">
+<title>Pedalea con Inteligencia</title>
+<!--
+  ============================================================
+  LANDING PAGE · Pedalea con Inteligencia (ebook en PDF)
+  Stack: HTML + CSS puro + un poco de JavaScript vanilla. Sin dependencias.
+  Fuentes: Google Fonts (Barlow y Barlow Condensed).
+  Imágenes: carpeta img/ (portada y páginas reales del libro).
+
+  CÓMO PERSONALIZAR
+  1. Busca "TU-LINK-DE-PAGO" y reemplázalo por tu enlace de Hotmart,
+     Gumroad, Payhip, Stripe o la plataforma que uses.
+  2. Busca "PRECIO" para cambiar el precio en todos los sitios.
+  3. Busca "[" para completar los textos con tus datos reales
+     (tu nombre, tu biografía, tu foto).
+  4. La garantía de 7 días está pensada para Hotmart, que la exige.
+     Si tu plataforma no la ofrece, elimina los bloques marcados con "GARANTÍA".
+  5. No añadas testimonios inventados: usa solo opiniones reales y con permiso.
+  ============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap">
+
+<style>
+/* Layout: columna central de 1160px; hero en dos columnas (texto + libro 3D);
+   las secciones alternan fondo base y superficie; tema oscuro por defecto, con tema claro. */
+:root {
+  /* ---------- Colores (tema oscuro, por defecto) — los mismos del libro ---------- */
+  --bg: #0b1622;          /* azul noche de la portada */
+  --surface: #102133;
+  --surface-2: #17304a;
+  --line: #20384f;
+  --fg: #edf3f7;
+  --muted: #9db0c0;
+  --accent: #2bb3a3;      /* verde agua del perfil de la portada */
+  --accent-ink: #032420;
+  --accent-soft: rgba(43, 179, 163, .13);
+  --warm: #f4a261;        /* naranja del sello «12 semanas» */
+  --warm-ink: #2b1503;
+  --danger: #ef8a72;
+  --shadow: 0 34px 80px -34px rgba(0, 0, 0, .75);
+
+  /* ---------- Tipografía ---------- */
+  --f-display: "Barlow Condensed", "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Barlow", "Segoe UI", system-ui, sans-serif;
+
+  --radius: 18px;
+  --wrap: 1160px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f8fa; --surface: #ffffff; --surface-2: #e5f1ef; --line: #d5e0e6;
+    --fg: #0f1d2a; --muted: #4d6273; --accent: #0f8b7e; --accent-ink: #ffffff;
+    --accent-soft: rgba(15, 139, 126, .1); --warm: #c76a1c; --warm-ink: #ffffff;
+    --danger: #c8553d; --shadow: 0 30px 70px -36px rgba(15, 35, 55, .35);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f5f8fa; --surface: #ffffff; --surface-2: #e5f1ef; --line: #d5e0e6;
+  --fg: #0f1d2a; --muted: #4d6273; --accent: #0f8b7e; --accent-ink: #ffffff;
+  --accent-soft: rgba(15, 139, 126, .1); --warm: #c76a1c; --warm-ink: #ffffff;
+  --danger: #c8553d; --shadow: 0 30px 70px -36px rgba(15, 35, 55, .35);
+  color-scheme: light;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 18px/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); font-weight: 800; text-transform: uppercase; }
+h3 { font-size: 1.45rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-inline: clamp(16px, 4vw, 32px); }
+section { padding-block: clamp(72px, 10vw, 120px); }
+.alt { background: var(--surface); }
+.eyebrow {
+  font: 600 .8rem/1 var(--f-body); text-transform: uppercase; letter-spacing: .16em;
+  color: var(--accent); display: inline-flex; align-items: center; gap: .55rem;
+}
+.eyebrow::before { content: ""; width: 24px; height: 2px; background: currentColor; }
+.lead { color: var(--muted); font-size: 1.15rem; max-width: 60ch; }
+.section-head { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 64px); max-width: 780px; }
+.icon { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+  font: 700 1.05rem/1 var(--f-body); text-decoration: none; border: 0; cursor: pointer;
+  padding: 1.1rem 1.6rem; border-radius: 999px; transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 12px 30px -12px var(--accent); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -14px var(--accent); }
+.btn-ghost { background: transparent; color: var(--fg); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-lg { padding: 1.3rem 2rem; font-size: 1.12rem; }
+
+/* ---------- Barra superior ---------- */
+.promo { background: var(--warm); color: var(--warm-ink); text-align: center; font: 600 .92rem/1.4 var(--f-body); padding: .6rem 16px; }
+.promo s { opacity: .7; }
+
+/* ---------- Navegación ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font: 800 1.25rem/1 var(--f-display); text-transform: uppercase; letter-spacing: .02em; }
+.brand-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+.brand-mark .icon { width: 20px; height: 20px; stroke-width: 2.2; }
+.nav-links { display: flex; gap: 28px; font-size: .97rem; color: var(--muted); }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--fg); }
+.nav .btn { padding: .75rem 1.2rem; font-size: .95rem; }
+@media (max-width: 880px) { .nav-links { display: none; } }
+@media (max-width: 420px) { .brand span:last-child { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(48px, 8vw, 96px) clamp(72px, 9vw, 110px); position: relative; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: -25% -15% auto auto; width: 75%; aspect-ratio: 1;
+  background: radial-gradient(circle, var(--accent-soft), transparent 65%); pointer-events: none;
+}
+.hero-profile { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 120px; opacity: .5; pointer-events: none; }
+.hero-profile polyline { fill: none; stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(40px, 6vw, 80px); align-items: center; position: relative; }
+.hero-copy { display: grid; gap: 26px; min-width: 0; }
+.hero h1 { font-size: clamp(3rem, 7vw, 5.6rem); font-weight: 800; text-transform: uppercase; line-height: .92; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lead { font-size: clamp(1.1rem, 1.6vw, 1.3rem); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.trust { display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--muted); font-size: .95rem; }
+.trust span { display: inline-flex; align-items: center; gap: .45rem; }
+.trust .icon { width: 18px; height: 18px; color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 6px; }
+.stats div { background: var(--bg); padding: 16px 14px; }
+.stats b { display: block; font: 800 2rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.stats small { color: var(--muted); font-size: .85rem; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- Libro 3D (portada real del PDF) ---------- */
+.book-stage { justify-self: center; perspective: 1600px; width: min(340px, 78vw); position: relative; }
+.book {
+  position: relative; transform-style: preserve-3d; transform: rotateY(-24deg) rotateX(4deg);
+  transition: transform .6s cubic-bezier(.2,.7,.2,1); aspect-ratio: 170 / 240;
+}
+.book-stage:hover .book { transform: rotateY(-12deg) rotateX(2deg); }
+.book img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 3px 8px 8px 3px; box-shadow: var(--shadow); transform: translateZ(14px); }
+.book::before { /* lomo */
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 28px;
+  background: linear-gradient(90deg, #06101a, #13293d); transform: rotateY(-90deg) translateZ(0); transform-origin: left;
+}
+.book::after { /* canto de las páginas */
+  content: ""; position: absolute; top: 6px; bottom: 6px; right: 0; width: 26px;
+  background: repeating-linear-gradient(90deg, #f3f1ea 0 2px, #dcd8cc 2px 3px);
+  transform: rotateY(90deg) translateZ(-12px) translateX(13px); transform-origin: right;
+}
+.book-tag {
+  position: absolute; z-index: 2; background: var(--surface); border: 1px solid var(--line); color: var(--fg);
+  border-radius: 14px; padding: 10px 14px; box-shadow: var(--shadow);
+  display: flex; align-items: center; gap: 10px; font-size: .88rem; line-height: 1.25;
+}
+.book-tag b { display: block; font: 800 1.2rem/1 var(--f-display); }
+.book-tag .icon { color: var(--accent); }
+.tag-1 { left: -64px; top: 56%; }
+.tag-2 { right: -52px; bottom: 8%; }
+@media (max-width: 560px) { .tag-1 { left: -8px; top: 52%; } .tag-2 { right: -8px; bottom: -20px; } }
+
+/* ---------- Mockup del libro (img/mockup-libro.jpg) ---------- */
+.mockup { margin: 0; justify-self: center; position: relative; width: min(430px, 86vw); }
+.mockup::before { /* halo detrás de la foto */
+  content: ""; position: absolute; inset: -12% -16%; z-index: 0; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent 75%);
+}
+.mockup img {
+  position: relative; z-index: 1; width: 100%; height: auto; border-radius: 26px;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .75), 0 0 0 1px color-mix(in srgb, var(--fg) 10%, transparent);
+  transform: rotate(-1.5deg); transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.mockup:hover img { transform: rotate(0deg) translateY(-6px); }
+.mockup .book-tag { z-index: 2; }
+.mockup .tag-1 { left: -72px; top: 58%; }
+.mockup .tag-2 { right: -56px; top: -3%; bottom: auto; }
+.offer .mockup { width: min(360px, 78vw); }
+@media (max-width: 560px) {
+  .mockup .tag-1 { left: -6px; top: auto; bottom: -22px; }
+  .mockup .tag-2 { right: -6px; top: -18px; }
+}
+
+/* ---------- Para quién ---------- */
+.who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.who-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; display: grid; gap: 12px; align-content: start; }
+.who-card .lvl { font: 700 .8rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.who-card p { color: var(--muted); font-size: 1rem; }
+.who-card .start { font-size: .92rem; color: var(--fg); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; }
+@media (max-width: 900px) { .who { grid-template-columns: 1fr; } }
+
+/* ---------- Problema ---------- */
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+.pains { display: grid; gap: 16px; }
+.pain { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+.pain .icon { color: var(--danger); margin-top: 3px; }
+.pain p { color: var(--muted); }
+.pain strong { color: var(--fg); }
+/* Gráfico del reparto de intensidad */
+.split { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(22px, 4vw, 34px); display: grid; gap: 20px; }
+.split h3 { font-size: 1.5rem; }
+.bar-row { display: grid; gap: 8px; }
+.bar-row > span { font-weight: 600; font-size: .95rem; display: flex; justify-content: space-between; }
+.bar-row small { color: var(--muted); font-weight: 400; }
+.bar { display: flex; height: 34px; border-radius: 10px; overflow: hidden; font: 700 .8rem/34px var(--f-body); color: #fff; }
+.bar i { font-style: normal; text-align: center; white-space: nowrap; overflow: hidden; }
+.z-easy { background: #2bb3a3; color: #032420; }
+.z-mid { background: #8a9aa8; color: #0b1622; }
+.z-hard { background: #f4a261; color: #2b1503; }
+.split-note { color: var(--muted); font-size: .92rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .88rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+@media (max-width: 900px) { .problem-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Pilares ---------- */
+.pillars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.pillar { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 20px; display: grid; gap: 12px; align-content: start; transition: border-color .2s, transform .2s; }
+.pillar:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); transform: translateY(-3px); }
+.pillar .ico { width: 48px; height: 48px; border-radius: 14px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.pillar p { color: var(--muted); font-size: .97rem; }
+.pillar .chap { font-size: .82rem; color: var(--accent); font-weight: 600; }
+@media (max-width: 1050px) { .pillars { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .pillars { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .pillars { grid-template-columns: 1fr; } }
+
+/* ---------- Temario ---------- */
+.curriculum { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+.curriculum aside { position: sticky; top: 100px; display: grid; gap: 22px; }
+.extras { display: grid; gap: 10px; }
+.extras div { display: flex; gap: 10px; align-items: flex-start; color: var(--muted); font-size: .98rem; }
+.extras .icon { color: var(--accent); width: 20px; height: 20px; margin-top: 3px; }
+.extras strong { color: var(--fg); }
+.modules { display: grid; gap: 10px; }
+.module { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.module summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 50px 1fr auto; gap: 14px; align-items: center; padding: 18px 20px; }
+.module summary::-webkit-details-marker { display: none; }
+.module .num { font: 800 1.5rem/1 var(--f-display); color: var(--accent); }
+.module summary h3 { font-size: 1.25rem; }
+.module .chev { transition: transform .25s; color: var(--muted); }
+.module[open] .chev { transform: rotate(180deg); }
+.module-body { padding: 0 20px 20px 84px; color: var(--muted); display: grid; gap: 10px; font-size: .98rem; }
+.module-body ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 4px; }
+.result { display: inline-flex; gap: 8px; align-items: center; color: var(--fg); font-weight: 600; font-size: .93rem; }
+.result .icon { width: 18px; height: 18px; color: var(--accent); }
+@media (max-width: 900px) { .curriculum { grid-template-columns: 1fr; } .curriculum aside { position: static; } }
+@media (max-width: 520px) { .module summary { grid-template-columns: 40px 1fr; } .module .chev { display: none; } .module-body { padding-left: 20px; } }
+
+/* ---------- Vista previa ---------- */
+.preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.page-card { margin: 0; display: grid; gap: 12px; }
+.page-card img { width: 100%; border-radius: 6px; box-shadow: var(--shadow); border: 1px solid var(--line); background: #fff; cursor: zoom-in; transition: transform .25s; }
+.page-card img:hover { transform: translateY(-4px); }
+.page-card figcaption { color: var(--muted); font-size: .93rem; }
+.page-card figcaption b { color: var(--fg); display: block; }
+@media (max-width: 900px) { .preview { grid-template-columns: 1fr 1fr; } }
+/* Visor ampliado */
+.lightbox { border: 0; padding: 0; background: transparent; max-width: min(92vw, 720px); max-height: 94vh; }
+.lightbox::backdrop { background: rgba(5, 10, 16, .82); }
+.lightbox img { max-height: 90vh; width: auto; margin: 0 auto; border-radius: 6px; }
+.lightbox button { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--surface); color: var(--fg); cursor: pointer; display: grid; place-items: center; }
+
+/* ---------- Plan de 12 semanas ---------- */
+.plan12 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.phase { border-radius: 20px; padding: 26px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 12px; align-content: start; position: relative; overflow: hidden; }
+.phase .weeks { font: 700 .8rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.phase p { color: var(--muted); font-size: .98rem; }
+.phase ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .95rem; display: grid; gap: 4px; }
+.phase .test { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; font-size: .92rem; color: var(--fg); }
+.phase .test .icon { width: 18px; height: 18px; color: var(--warm); }
+.phase-bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.phase-bar i { display: block; height: 100%; background: var(--accent); }
+@media (max-width: 900px) { .plan12 { grid-template-columns: 1fr; } }
+
+/* ---------- Autor ---------- */
+.author { display: grid; grid-template-columns: 400px 1fr; gap: clamp(28px, 5vw, 60px); align-items: center; }
+.ph {
+  margin: 0; border-radius: 22px; border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--accent) 5%, transparent) 14px 28px), var(--surface-2);
+  display: grid; place-items: center; text-align: center; padding: 24px; color: var(--muted); aspect-ratio: 4 / 5;
+}
+.ph .icon { width: 36px; height: 36px; color: var(--accent); margin: 0 auto 10px; }
+.ph b { display: block; color: var(--fg); font-size: 1rem; margin-bottom: 4px; }
+.ph small { font-size: .85rem; }
+.author-photo { margin: 0; position: relative; }
+.author-photo img {
+  width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 30% 50%;
+  border-radius: 24px; box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--fg) 10%, transparent);
+}
+.author-photo figcaption {
+  position: absolute; left: 14px; bottom: 14px; background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px 12px; font-size: .85rem; color: var(--muted);
+}
+@media (max-width: 800px) { .author-photo img { aspect-ratio: 4 / 3; object-position: 30% 30%; } }
+.author-photo figcaption b { display: block; color: var(--fg); font: 700 1.05rem/1.1 var(--f-display); text-transform: uppercase; }
+.author-copy { display: grid; gap: 18px; }
+
+/* ---------- Banda visual de zonas (img/entrena-por-zonas.jpg) ---------- */
+.band { padding-block: clamp(56px, 8vw, 96px); }
+.band-figure { margin: 0; position: relative; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); }
+.band-figure img { width: 100%; height: auto; display: block; }
+.band-caption {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px;
+  margin-top: 22px;
+}
+.band-caption p { color: var(--muted); max-width: 62ch; }
+.band-caption strong { color: var(--fg); }
+.author-copy p { color: var(--muted); max-width: 62ch; }
+@media (max-width: 800px) { .author { grid-template-columns: 1fr; } .author .ph { max-width: 320px; } }
+
+/* ---------- Precio ---------- */
+.offer { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+.offer-book { justify-self: center; width: min(300px, 70vw); }
+.card { background: var(--bg); border: 2px solid var(--accent); border-radius: 26px; padding: clamp(26px, 4vw, 38px); display: grid; gap: 22px; box-shadow: 0 30px 80px -40px var(--accent); position: relative; }
+.badge { position: absolute; top: -15px; left: 28px; background: var(--warm); color: var(--warm-ink); font: 700 .78rem/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; }
+.plan-name { font: 600 .85rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.price b { font: 800 4.2rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.price s { color: var(--muted); font-size: 1.3rem; }
+.price span { color: var(--muted); font-size: .95rem; }
+.card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 1rem; }
+.card li { display: flex; gap: 10px; }
+.card li .icon { width: 20px; height: 20px; color: var(--accent); margin-top: 3px; }
+.card .btn { width: 100%; }
+.card-note { color: var(--muted); font-size: .88rem; text-align: center; }
+.guarantee { margin-top: 28px; display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; background: var(--surface-2); border-radius: 22px; padding: 24px 28px; }
+.seal { width: 88px; height: 88px; border-radius: 50%; border: 2px dashed var(--accent); display: grid; place-items: center; text-align: center; color: var(--accent); }
+.seal b { display: block; font: 800 2.1rem/1 var(--f-display); }
+.seal small { font: 600 .64rem/1 var(--f-body); letter-spacing: .12em; text-transform: uppercase; }
+.guarantee p { color: var(--muted); margin-top: 6px; }
+@media (max-width: 900px) { .offer { grid-template-columns: 1fr; } .offer-book { order: -1; } }
+@media (max-width: 520px) { .guarantee { grid-template-columns: 1fr; text-align: center; } .seal { margin-inline: auto; } }
+
+/* ---------- FAQ ---------- */
+.faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 18px; padding: 22px 0; font: 700 1.3rem/1.25 var(--f-display); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .icon { color: var(--accent); transition: transform .25s; }
+.faq details[open] summary .icon { transform: rotate(45deg); }
+.faq details p { color: var(--muted); padding: 0 40px 22px 0; max-width: 64ch; }
+@media (max-width: 900px) { .faq { grid-template-columns: 1fr; } }
+
+/* ---------- Cierre ---------- */
+.closing { text-align: center; position: relative; overflow: hidden; }
+.closing::before { content: ""; position: absolute; inset: auto 0 -40% 0; height: 90%; background: radial-gradient(ellipse at center, var(--accent-soft), transparent 70%); pointer-events: none; }
+.closing .wrap { position: relative; display: grid; gap: 26px; justify-items: center; }
+.closing h2 { font-size: clamp(2.6rem, 6vw, 4.6rem); max-width: 16ch; }
+.closing .lead { margin-inline: auto; }
+
+/* ---------- Footer ---------- */
+footer.site { border-top: 1px solid var(--line); padding-block: 36px 110px; color: var(--muted); font-size: .86rem; }
+footer.site .wrap { display: grid; gap: 14px; }
+footer.site .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.theme-toggle { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: .45rem .9rem; font: 500 .85rem/1 var(--f-body); cursor: pointer; }
+
+/* ---------- Barra fija de compra (móvil) ---------- */
+.sticky-buy {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: none;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line); align-items: center; justify-content: space-between; gap: 12px;
+}
+.sticky-buy small { display: block; color: var(--muted); font-size: .76rem; }
+.sticky-buy b { font: 800 1.5rem/1 var(--f-display); }
+.sticky-buy .btn { padding: .9rem 1.2rem; font-size: .95rem; }
+@media (max-width: 760px) { .sticky-buy { display: flex; } footer.site { padding-bottom: 130px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Iconos SVG reutilizables (trazo "outline", sin librerías externas) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="17" r="3.5"/><circle cx="18.5" cy="17" r="3.5"/><path d="M5.5 17 9 9h6l3.5 8M9 9 12 17h-1M15 9l-1.5-3H11"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 16a8 8 0 1 1 16 0"/><path d="m12 16 4-5"/><path d="M4 20h16"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-bottle" viewBox="0 0 24 24"><path d="M9 2h6M10 2v3l-2 3v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8l-2-3V2"/><path d="M8 12h8"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3V4zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3V4z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4V4zM20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7V4z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== BARRA SUPERIOR ===================== -->
+<!-- PRECIO (ARS): cambia aquí el precio de lanzamiento y el precio normal; también en la tarjeta de compra y en la barra fija del móvil. -->
+<div class="promo">Precio de lanzamiento: <strong>$ 15.000 ARS</strong> <s>$ 25.000</s> · descarga inmediata en PDF</div>
+
+<!-- ===================== NAVEGACIÓN ===================== -->
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Pedalea con Inteligencia, ir al inicio">
+      <span class="brand-mark"><svg class="icon"><use href="#i-bike"/></svg></span>
+      <span>Pedalea con Inteligencia</span>
+    </a>
+    <nav class="nav-links" aria-label="Secciones">
+      <a href="#para-quien">Para quién</a>
+      <a href="#contenido">Contenido</a>
+      <a href="#vista-previa">Vista previa</a>
+      <a href="#plan">Plan de 12 semanas</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <a class="btn btn-primary" href="#comprar">Quiero el libro</a>
+  </div>
+</header>
+
+<main id="inicio">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <svg class="hero-profile" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true">
+    <polyline points="0,54 50,52 90,44 130,48 180,30 220,36 270,18 310,28 360,10 400,22 450,16 500,36 550,30 600,46"/>
+  </svg>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Ebook · Guía completa de ciclismo de ruta</span>
+      <h1>Deja de solo pedalear. <em>Entrena con cabeza.</em></h1>
+      <p class="lead">La guía práctica para ciclistas principiantes e intermedios que quieren mejorar su rendimiento, evitar el estancamiento y las lesiones, y disfrutar más de cada salida. Sin promesas milagrosas: técnica, zonas, planes, nutrición y un plan de 12 semanas listo para seguir.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="#comprar">Descargar el libro</a>
+        <a class="btn btn-ghost" href="#contenido"><svg class="icon"><use href="#i-list"/></svg>Ver el índice</a>
+      </div>
+      <div class="trust">
+        <span><svg class="icon"><use href="#i-download"/></svg>Descarga inmediata en PDF</span>
+        <span><svg class="icon"><use href="#i-gauge"/></svg>Con o sin potenciómetro</span>
+        <!-- GARANTÍA -->
+        <span><svg class="icon"><use href="#i-shield"/></svg>Garantía de 7 días</span>
+      </div>
+      <div class="stats" aria-label="El libro en números">
+        <div><b>12</b><small>capítulos</small></div>
+        <div><b>107</b><small>páginas</small></div>
+        <div><b>12</b><small>semanas de plan</small></div>
+        <div><b>+10</b><small>checklists y plantillas</small></div>
+      </div>
+    </div>
+
+    <!-- Mockup del libro (img/mockup-libro.jpg, 784×1168). -->
+    <figure class="mockup">
+      <img src="img/mockup-libro.jpg" alt="Libro Pedalea con Inteligencia: Guía completa de ciclismo de ruta, con un ciclista en carretera de montaña al atardecer en la portada" width="784" height="1168" fetchpriority="high">
+      <div class="book-tag tag-1"><svg class="icon"><use href="#i-gauge"/></svg><div><b>7 zonas</b>con o sin potenciómetro</div></div>
+      <div class="book-tag tag-2"><svg class="icon"><use href="#i-cal"/></svg><div><b>12 semanas</b>de plan, día a día</div></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== PARA QUIÉN ===================== -->
+<section class="alt" id="para-quien">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Para quién es</span>
+      <h2>Para el ciclista que quiere que cada hora cuente.</h2>
+      <p class="lead">No necesitas ser competidor ni tener material caro. Necesitas ganas de entender lo que haces sobre la bici. El libro te indica por dónde empezar según tu punto de partida.</p>
+    </div>
+    <div class="who">
+      <article class="who-card">
+        <span class="lvl">Principiante</span>
+        <h3>Ruedas desde hace menos de un año</h3>
+        <p>Quieres hacerlo bien desde el principio: una bici ajustada, buena técnica, hábitos sólidos y saber qué hacer en cada salida.</p>
+        <p class="start">Empieza por: <strong>posición, técnica y plan principiante</strong></p>
+      </article>
+      <article class="who-card">
+        <span class="lvl">Intermedio</span>
+        <h3>Sales con regularidad, pero sin estructura</h3>
+        <p>Haces kilómetros, pero todas las salidas se parecen. Quieres ordenar el entrenamiento por zonas y saber comer y beber en ruta.</p>
+        <p class="start">Empieza por: <strong>zonas, plan intermedio y energía</strong></p>
+      </article>
+      <article class="who-card">
+        <span class="lvl">Estancado o con un evento</span>
+        <h3>Entrenas, pero ya no mejoras</h3>
+        <p>Subes igual que hace un año, o tienes una marcha marcada en el calendario y quieres llegar preparado y sin sustos.</p>
+        <p class="start">Empieza por: <strong>reparto de la intensidad y plan de 12 semanas</strong></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROBLEMA ===================== -->
+<section id="problema">
+  <div class="wrap problem-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:28px">
+        <span class="eyebrow">El problema</span>
+        <h2>Más kilómetros no siempre significan más rendimiento.</h2>
+        <p class="lead">La mayoría de los aficionados se estanca por los mismos motivos. Ninguno se arregla con una bici más cara.</p>
+      </div>
+      <div class="pains">
+        <div class="pain"><svg class="icon"><use href="#i-x"/></svg><p><strong>Todas las salidas al mismo ritmo.</strong> Demasiado duro para recuperar y demasiado suave para mejorar: la famosa «zona gris».</p></div>
+        <div class="pain"><svg class="icon"><use href="#i-x"/></svg><p><strong>Pájaras en las salidas largas.</strong> Empezar a comer cuando ya tienes hambre es empezar tarde.</p></div>
+        <div class="pain"><svg class="icon"><use href="#i-x"/></svg><p><strong>Molestias que «ya se pasarán».</strong> Rodillas, espalda o manos que avisan de un sillín mal ajustado o de una carga mal dosificada.</p></div>
+      </div>
+    </div>
+
+    <!-- Gráfico ilustrativo: reparto típico de la intensidad. Los porcentajes del libro son orientativos. -->
+    <div class="split" role="img" aria-label="Comparación: el aficionado típico pasa la mayor parte del tiempo a intensidad moderada; un reparto inteligente dedica alrededor del 80 % a intensidad suave y una parte pequeña a intensidad alta.">
+      <h3>Cómo repartes la intensidad</h3>
+      <div class="bar-row">
+        <span>Sin estructura <small>ilustrativo</small></span>
+        <div class="bar"><i class="z-easy" style="width:15%"></i><i class="z-mid" style="width:75%">zona gris</i><i class="z-hard" style="width:10%"></i></div>
+      </div>
+      <div class="bar-row">
+        <span>Con criterio <small>≈ 80 % suave</small></span>
+        <div class="bar"><i class="z-easy" style="width:80%">suave de verdad</i><i class="z-mid" style="width:5%"></i><i class="z-hard" style="width:15%">duro</i></div>
+      </div>
+      <div class="legend">
+        <span><i class="z-easy"></i>Suave (Z1–Z2)</span>
+        <span><i class="z-mid"></i>Moderado (Z3)</span>
+        <span><i class="z-hard"></i>Intenso (Z4+)</span>
+      </div>
+      <p class="split-note">En el capítulo 4 aprendes a calcular tus zonas y a repartir la intensidad para que los días suaves te recuperen y los días duros te hagan mejorar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PILARES ===================== -->
+<section class="alt" id="pilares">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">El método</span>
+      <h2>Cinco pilares para rendir más y lesionarte menos.</h2>
+      <p class="lead">Cada capítulo termina con un resumen clave y una acción concreta para esa misma semana. Lees, aplicas y notas la diferencia.</p>
+    </div>
+    <div class="pillars">
+      <article class="pillar"><span class="ico"><svg class="icon"><use href="#i-bike"/></svg></span><h3>Técnica</h3><p>Ajuste de la bici, cadencia, cambio, subidas, descensos y rodar en grupo.</p><span class="chap">Capítulos 2 y 3</span></article>
+      <article class="pillar"><span class="ico"><svg class="icon"><use href="#i-gauge"/></svg></span><h3>Entrenamiento</h3><p>FTP, 7 zonas y planes para principiante, intermedio y avanzado.</p><span class="chap">Capítulos 4 y 5</span></article>
+      <article class="pillar"><span class="ico"><svg class="icon"><use href="#i-bottle"/></svg></span><h3>Energía</h3><p>Qué comer y beber antes, durante y después, y tu plan de avituallamiento.</p><span class="chap">Capítulos 6 y 7</span></article>
+      <article class="pillar"><span class="ico"><svg class="icon"><use href="#i-heart"/></svg></span><h3>Salud</h3><p>Molestias más comunes, su causa probable, y rutinas de fuerza y movilidad.</p><span class="chap">Capítulos 8 y 9</span></article>
+      <article class="pillar"><span class="ico"><svg class="icon"><use href="#i-brain"/></svg></span><h3>Mentalidad</h3><p>Constancia, gestión del sufrimiento y estrategia en marchas.</p><span class="chap">Capítulo 10</span></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BANDA VISUAL: ZONAS ===================== -->
+<!-- Imagen img/entrena-por-zonas.jpg (1168×784). -->
+<section class="band" aria-label="Entrena por zonas">
+  <div class="wrap">
+    <figure class="band-figure">
+      <img src="img/entrena-por-zonas.jpg" alt="Ciclista rodando al atardecer en una carretera de montaña, con datos de potencia, cadencia y zonas de entrenamiento superpuestos" width="1168" height="784" loading="lazy">
+    </figure>
+    <div class="band-caption">
+      <p><strong>Cada salida con un propósito.</strong> En el capítulo 4 calculas tu FTP, defines tus 7 zonas y aprendes a usarlas con potenciómetro, con pulsómetro o solo con sensaciones.</p>
+      <a class="btn btn-ghost" href="#contenido"><svg class="icon"><use href="#i-list"/></svg>Ver todo el contenido</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTENIDO ===================== -->
+<section id="contenido">
+  <div class="wrap curriculum">
+    <aside>
+      <div class="section-head" style="margin-bottom:0">
+        <span class="eyebrow">Índice</span>
+        <h2>12 capítulos y 2 anexos.</h2>
+        <p class="lead">Cada capítulo es autosuficiente: puedes leerlo de principio a fin o ir directo a lo que más necesitas ahora.</p>
+      </div>
+      <div class="extras">
+        <div><svg class="icon"><use href="#i-check"/></svg><p><strong>Tablas de referencia:</strong> zonas, cantidades de hidratos por hora, molestias y su causa, mantenimiento.</p></div>
+        <div><svg class="icon"><use href="#i-check"/></svg><p><strong>Errores comunes</strong> y cómo evitarlos en cada tema.</p></div>
+        <div><svg class="icon"><use href="#i-check"/></svg><p><strong>Checklists</strong> de ajuste de la bici, test de FTP, salida larga y kit de ruta.</p></div>
+        <div><svg class="icon"><use href="#i-check"/></svg><p><strong>Plantillas imprimibles:</strong> diario, registro de tests, sudoración, avituallamiento y estrategia.</p></div>
+      </div>
+    </aside>
+
+    <div class="modules">
+      <details class="module" open>
+        <summary><span class="num">01</span><h3>Por qué el ciclismo de ruta es más que pedalear</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Del «solo pedalear» a pedalear con intención.</li><li>Qué puedes esperar de forma realista: plazos y límites.</li><li>Autoevaluación inicial y rutas de lectura por nivel.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Un objetivo concreto para los próximos 3 meses</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">02</span><h3>Posición, bicicleta y equipamiento esencial</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Elegir bici: talla, geometría y qué es marketing.</li><li>Ajuste paso a paso: calas, sillín y manillar.</li><li>Qué comprar primero según tu presupuesto y cómo vestirte por capas.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Tu bici ajustada con el checklist en casa</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">03</span><h3>Técnica de pedaleo y eficiencia</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Cadencia: rangos habituales y cómo encontrar la tuya.</li><li>Cambio, subida, llano y descenso con seguridad.</li><li>Rodar en grupo: ir a rueda, relevos y señales.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Dos sesiones técnicas para esta semana</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">04</span><h3>Entrenamiento por zonas y potenciómetro</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Potencia, pulso y esfuerzo percibido: ventajas y límites.</li><li>Test de FTP de 20 minutos y de rampa, con protocolo completo.</li><li>Tabla maestra de 7 zonas y cómo evitar la «zona gris».</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Tus zonas calculadas</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">05</span><h3>Planes de entrenamiento por nivel</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Periodización sencilla y bloques de 3+1.</li><li>Planes semanales para 4–6, 6–9 y 9–12 horas.</li><li>Adaptar el plan a la vida real y reconocer la fatiga.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Tu semana tipo en el calendario</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">06</span><h3>Nutrición en ruta y alrededor del entrenamiento</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Cuánto comer por hora según la duración de la salida.</li><li>Antes, durante y después, sin mitos.</li><li>Peso y rendimiento con un enfoque saludable.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Adiós a las pájaras</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">07</span><h3>Hidratación y gestión de la energía</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Calcula tu tasa de sudoración con un test de pesaje.</li><li>Sodio, calor, frío y el riesgo de beber en exceso.</li><li>Plan de avituallamiento para salidas de más de 3 horas.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Tu plan de avituallamiento personal</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">08</span><h3>Prevención de lesiones más comunes</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Rodilla, espalda, cuello, manos, pies y zona del sillín.</li><li>Tabla: molestia → causa probable → qué revisar.</li><li>Caídas, señales de conmoción y cuándo acudir a un profesional.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Sabes qué revisar ante cada molestia</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">09</span><h3>Fuerza y movilidad para ciclistas</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Por qué la fuerza mejora el rendimiento y protege los huesos.</li><li>Rutinas en casa y en el gimnasio, en dos niveles.</li><li>10 minutos de movilidad para contrarrestar la postura.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Dos sesiones de fuerza a la semana</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">10</span><h3>Mentalidad y estrategia</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Objetivos de resultado y de proceso; hábitos antes que motivación.</li><li>Gestionar el sufrimiento y dosificar en una marcha.</li><li>El diario de entrenamiento y cómo analizarlo.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Tu estrategia para el próximo evento</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">11</span><h3>Mantenimiento básico y seguridad en ruta</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Revisión antes de salir y cuidado semanal de la cadena.</li><li>Pinchazos (cámara y tubeless), cadena rota y cambio desajustado.</li><li>Seguridad vial y normativa básica en España.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Autonomía mecánica y kit de ruta completo</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">12</span><h3>Conclusión y plan de acción de 12 semanas</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Tres fases: base, construcción y trabajo específico.</li><li>Entrenamiento, fuerza, energía y mantenimiento, semana a semana.</li><li>Tests en las semanas 1, 8 y 12 para medir tu progreso.</li></ul><span class="result"><svg class="icon"><use href="#i-check"/></svg>Un plan listo para empezar el lunes</span></div>
+      </details>
+      <details class="module">
+        <summary><span class="num">A·B</span><h3>Glosario y plantillas</h3><svg class="icon chev"><use href="#i-down"/></svg></summary>
+        <div class="module-body"><ul><li>Glosario con todos los términos técnicos explicados.</li><li>Plantillas: diario semanal, registro de tests, tasa de sudoración, avituallamiento y estrategia.</li></ul></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VISTA PREVIA ===================== -->
+<!-- Páginas reales del PDF. Si actualizas el libro, vuelve a exportar estas capturas. -->
+<section class="alt" id="vista-previa">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Vista previa</span>
+      <h2>Así es por dentro.</h2>
+      <p class="lead">Párrafos cortos, tablas claras y recuadros de acción. Pulsa sobre una página para verla en grande.</p>
+    </div>
+    <div class="preview">
+      <figure class="page-card"><img src="img/muestra-capitulo.png" alt="Primera página del capítulo 1 del libro" loading="lazy"><figcaption><b>Capítulo 1</b>Del «solo pedalear» a pedalear con intención</figcaption></figure>
+      <figure class="page-card"><img src="img/muestra-zonas.png" alt="Página con la tabla maestra de las 7 zonas de entrenamiento y el checklist del test de FTP" loading="lazy"><figcaption><b>Tabla maestra de zonas</b>Potencia, pulso y esfuerzo percibido</figcaption></figure>
+      <figure class="page-card"><img src="img/muestra-plan.png" alt="Página del plan de 12 semanas con las tablas semanales de las fases 1 y 2" loading="lazy"><figcaption><b>Plan de 12 semanas</b>Semana a semana, con casillas</figcaption></figure>
+      <figure class="page-card"><img src="img/muestra-plantillas.png" alt="Página de plantillas con el diario de entrenamiento semanal" loading="lazy"><figcaption><b>Plantillas</b>Diario, tests y avituallamiento</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<dialog class="lightbox" id="lightbox" aria-label="Página ampliada">
+  <button type="button" aria-label="Cerrar" data-close><svg class="icon"><use href="#i-close"/></svg></button>
+  <img src="" alt="">
+</dialog>
+
+<!-- ===================== PLAN DE 12 SEMANAS ===================== -->
+<section id="plan">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Incluido en el libro</span>
+      <h2>Un plan de 12 semanas que une todo.</h2>
+      <p class="lead">No es solo un calendario de entrenamientos. Cada semana incluye las sesiones en bici, la fuerza, un hábito de nutrición o hidratación y una tarea de mantenimiento. Escrito para nivel intermedio, con adaptaciones para principiante y avanzado.</p>
+    </div>
+    <div class="plan12">
+      <article class="phase">
+        <span class="weeks">Semanas 1–4</span>
+        <div class="phase-bar"><i style="width:33%"></i></div>
+        <h3>Base, técnica y test inicial</h3>
+        <ul><li>Construir la base aeróbica.</li><li>Pulir la técnica y crear hábitos.</li><li>Test de sudoración y diario.</li></ul>
+        <span class="test"><svg class="icon"><use href="#i-flag"/></svg>Test de FTP en la semana 1</span>
+      </article>
+      <article class="phase">
+        <span class="weeks">Semanas 5–8</span>
+        <div class="phase-bar"><i style="width:66%"></i></div>
+        <h3>Construcción</h3>
+        <ul><li>Sweet spot, umbral y VO2máx.</li><li>Fuerza en nivel 2.</li><li>Entrenar el estómago para las salidas largas.</li></ul>
+        <span class="test"><svg class="icon"><use href="#i-flag"/></svg>Nuevo test al final de la semana 8</span>
+      </article>
+      <article class="phase">
+        <span class="weeks">Semanas 9–12</span>
+        <div class="phase-bar"><i style="width:100%"></i></div>
+        <h3>Específico y puesta a punto</h3>
+        <ul><li>Simular tu objetivo: terreno, ritmo y avituallamiento.</li><li>Llegar fresco al día clave.</li><li>Evento o test final.</li></ul>
+        <span class="test"><svg class="icon"><use href="#i-flag"/></svg>Compara la semana 12 con la 1</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUTOR ===================== -->
+<section class="alt" id="autor">
+  <div class="wrap author">
+    <!-- Foto del autor (img/autor-jose-francisco-vargas.jpg). Se recorta en vertical con object-fit;
+         si cambias la foto, ajusta object-position en .author-photo img para centrar a la persona. -->
+    <figure class="author-photo">
+      <img src="img/autor-jose-francisco-vargas.jpg" alt="Jose Francisco Vargas rodando en bicicleta de carretera por una carretera de montaña" width="1168" height="784" loading="lazy">
+      <figcaption><b>Jose Francisco Vargas</b>Autor de Pedalea con Inteligencia</figcaption>
+    </figure>
+    <div class="author-copy">
+      <span class="eyebrow">Sobre el autor</span>
+      <h2>Jose Francisco Vargas</h2>
+      <!-- Biografía: puedes añadir años de experiencia, logros o formación como entrenador si quieres reforzarla. -->
+      <p>Jose Francisco Vargas es ciclista de ruta y, sobre todo, un apasionado de entender lo que pasa sobre la bici: por qué un día las piernas van solas y otro no, cómo se prepara una salida larga y qué separa al ciclista que progresa del que se estanca.</p>
+      <p>Como tantos ciclistas, comprobó que la diferencia no está en pedalear más, sino en pedalear con criterio. De esa idea nace <strong>Pedalea con Inteligencia</strong>: una guía práctica que reúne técnica, entrenamiento, nutrición, salud y mentalidad en un método claro y aplicable.</p>
+      <p>La escribió para quienes viven el ciclismo con pasión y quieren sacarle más partido a cada kilómetro: con trabajo, familia y horas limitadas, pero con ganas de mejorar, cuidar el cuerpo y disfrutar de la bici durante muchos años.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRECIO ===================== -->
+<section id="comprar">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Consigue el libro</span>
+      <h2>Empieza tu plan este lunes.</h2>
+    </div>
+    <div class="offer">
+      <figure class="mockup offer-book">
+        <img src="img/mockup-libro.jpg" alt="" width="784" height="1168" loading="lazy">
+      </figure>
+      <div>
+        <div class="card">
+          <span class="badge">Precio de lanzamiento</span>
+          <span class="plan-name">Ebook en PDF</span>
+          <!-- PRECIO -->
+          <div class="price"><b>$ 15.000</b><s>$ 25.000</s><span>ARS · pago único</span></div>
+          <ul>
+            <li><svg class="icon"><use href="#i-check"/></svg>Libro completo de 107 páginas: 12 capítulos y 2 anexos</li>
+            <li><svg class="icon"><use href="#i-check"/></svg>Planes para principiante, intermedio y avanzado</li>
+            <li><svg class="icon"><use href="#i-check"/></svg>Plan de acción de 12 semanas, semana a semana</li>
+            <li><svg class="icon"><use href="#i-check"/></svg>Tabla maestra de zonas y protocolos de test de FTP</li>
+            <li><svg class="icon"><use href="#i-check"/></svg>Checklists y plantillas imprimibles</li>
+            <li><svg class="icon"><use href="#i-check"/></svg>Lectura en móvil, tablet u ordenador, o impreso</li>
+          </ul>
+          <!-- Reemplaza TU-LINK-DE-PAGO por tu enlace de pago -->
+          <a class="btn btn-primary btn-lg" href="TU-LINK-DE-PAGO">Comprar y descargar</a>
+          <p class="card-note">Pago seguro · Recibes el PDF al momento en tu correo</p>
+        </div>
+        <!-- GARANTÍA: elimina este bloque si tu plataforma de pago no ofrece reembolso. -->
+        <div class="guarantee">
+          <div class="seal"><div><b>7</b><small>días</small></div></div>
+          <div>
+            <h3>Garantía de 7 días</h3>
+            <p>Si el libro no es lo que esperabas, pide el reembolso dentro de los 7 días siguientes a la compra y te devolvemos el dinero.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="alt" id="faq">
+  <div class="wrap faq">
+    <div class="section-head" style="margin-bottom:0">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Antes de comprar.</h2>
+      <p class="lead">¿Te queda alguna duda? Escríbeme a [tu correo de contacto].</p>
+    </div>
+    <div>
+      <details><summary>¿Necesito un potenciómetro?<svg class="icon"><use href="#i-plus"/></svg></summary><p>No. El libro explica cómo entrenar con potencia, con pulsómetro o solo con el esfuerzo percibido. Todas las zonas incluyen equivalencias aproximadas en pulso y sensación.</p></details>
+      <details><summary>Soy principiante, ¿me sirve?<svg class="icon"><use href="#i-plus"/></svg></summary><p>Sí. Está pensado para principiantes e intermedios. Hay una ruta de lectura para cada nivel y un plan específico para quien entrena entre 4 y 6 horas por semana.</p></details>
+      <details><summary>¿Cuántas horas a la semana necesito?<svg class="icon"><use href="#i-plus"/></svg></summary><p>Los planes empiezan en 4 horas semanales. El plan de 12 semanas está escrito para 6–8 horas e incluye cómo adaptarlo si tienes menos o más tiempo.</p></details>
+      <details><summary>¿En qué formato llega?<svg class="icon"><use href="#i-plus"/></svg></summary><p>En PDF, con índice navegable. Se lee bien en móvil, tablet y ordenador, y las plantillas están preparadas para imprimir.</p></details>
+      <details><summary>¿Sirve para preparar una marcha cicloturista?<svg class="icon"><use href="#i-plus"/></svg></summary><p>Sí. El plan de 12 semanas termina con una fase específica y una puesta a punto, y los capítulos 7 y 10 te ayudan a preparar el avituallamiento y la estrategia del día.</p></details>
+      <details><summary>¿Sustituye a un médico o a un entrenador personal?<svg class="icon"><use href="#i-plus"/></svg></summary><p>No. Es una guía formativa con pautas orientativas basadas en recomendaciones habituales. Si tienes alguna lesión, enfermedad o dudas sobre tu salud, consulta con un profesional antes de aumentar tu carga de entrenamiento.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CIERRE ===================== -->
+<section class="closing">
+  <div class="wrap">
+    <span class="eyebrow">Tu próxima salida</span>
+    <h2>Que tenga un propósito.</h2>
+    <p class="lead">Dentro de 12 semanas puedes estar rodando igual que hoy o con un plan, tus zonas, tu avituallamiento y menos molestias. Tú eliges.</p>
+    <a class="btn btn-primary btn-lg" href="#comprar">Quiero pedalear con inteligencia</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <span>© 2026 Pedalea con Inteligencia · Jose Francisco Vargas</span>
+      <button class="theme-toggle" type="button" id="theme-toggle">Cambiar tema</button>
+    </div>
+    <p>Contenido divulgativo. No sustituye el consejo de un médico, fisioterapeuta o dietista-nutricionista. Practica el ciclismo respetando siempre las normas de circulación.</p>
+    <!-- Añade aquí los enlaces a tu aviso legal, política de privacidad y condiciones de venta (obligatorios en España). -->
+    <p><a href="#">[Aviso legal]</a> · <a href="#">[Política de privacidad]</a> · <a href="#">[Condiciones de venta]</a></p>
+  </div>
+</footer>
+
+<!-- Barra fija de compra en móvil -->
+<div class="sticky-buy">
+  <div><small>Ebook en PDF · ARS</small><b>$ 15.000</b></div>
+  <a class="btn btn-primary" href="#comprar">Comprar</a>
+</div>
+
+<script>
+  // Visor ampliado de las páginas de muestra
+  (function () {
+    var box = document.getElementById('lightbox');
+    if (!box || typeof box.showModal !== 'function') return;
+    var big = box.querySelector('img');
+    document.querySelectorAll('.page-card img').forEach(function (img) {
+      img.addEventListener('click', function () { big.src = img.src; big.alt = img.alt; box.showModal(); });
+    });
+    box.addEventListener('click', function (e) { if (e.target === box || e.target.closest('[data-close]')) box.close(); });
+  })();
+
+  // Cambio de tema claro / oscuro (se recuerda en este navegador)
+  (function () {
+    var root = document.documentElement;
+    try { var saved = localStorage.getItem('pci-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      var next = current === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pci-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
